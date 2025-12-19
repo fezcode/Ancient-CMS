@@ -31,23 +31,20 @@ export const getSystemHealth = async (req: Request, res: Response) => {
     // 2. Storage (Uploads folder size)
     const uploadsPath = path.join(__dirname, '../../public/uploads');
     const usedBytes = getFolderSize(uploadsPath);
-    const totalBytes = 1024 * 1024 * 1024 * 5; // 5GB Quota hardcoded for now
     
     // 3. CPU Load (Mocked for Windows compatibility or using os.loadavg for *nix)
     // os.loadavg() returns array [1, 5, 15] min averages. On Windows it's always [0,0,0] usually.
     const cpus = os.cpus();
     const load = os.loadavg()[0] || (Math.random() * 10 + 5); // Fallback to mock 5-15% if 0
 
-    // 4. Uptime
-    const uptime = os.uptime();
+    // 4. Uptime (Process uptime instead of OS uptime)
+    const uptime = Math.floor(process.uptime());
 
     res.json({
       dbStatus: 'ONLINE',
       dbLatency,
       storage: {
         used: usedBytes,
-        total: totalBytes,
-        percent: Math.round((usedBytes / totalBytes) * 100)
       },
       cpuLoad: Math.round(load),
       uptime
@@ -56,7 +53,7 @@ export const getSystemHealth = async (req: Request, res: Response) => {
     res.json({
       dbStatus: 'OFFLINE',
       dbLatency: -1,
-      storage: { used: 0, total: 0, percent: 0 },
+      storage: { used: 0 },
       cpuLoad: 0,
       uptime: 0
     });

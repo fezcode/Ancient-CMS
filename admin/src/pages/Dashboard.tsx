@@ -248,16 +248,11 @@ const Dashboard: React.FC = () => {
             <div className="space-y-3">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-ancient-300 font-medium flex items-center gap-2">
-                  <HardDrive size={14} className="text-ancient-500" /> Storage
+                  <HardDrive size={14} className="text-ancient-500" /> Storage Used
                 </span>
-                <span className="text-ancient-500 text-xs font-mono">{formatBytes(system?.storage?.used || 0)} / {formatBytes(system?.storage?.total || 0)}</span>
+                <span className="text-ancient-500 text-xs font-mono">{formatBytes(system?.storage?.used || 0)}</span>
               </div>
-              <div className="w-full bg-ancient-950 rounded-full h-1.5 overflow-hidden">
-                <div 
-                  className="bg-blue-500 h-1.5 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-1000" 
-                  style={{ width: `${system?.storage?.percent || 0}%` }}
-                />
-              </div>
+              <div className="w-full bg-ancient-950/30 rounded-full h-1 border border-ancient-800/30" />
             </div>
 
             <div className="space-y-3">
