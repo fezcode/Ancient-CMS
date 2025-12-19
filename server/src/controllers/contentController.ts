@@ -128,9 +128,9 @@ export const getRecentActivity = async (req: Request, res: Response) => {
 
     // Combine and format
     const activity = [
-      ...posts.map(p => ({ ...p, type: 'post' })),
-      ...projects.map(p => ({ ...p, type: 'project' })),
-      ...stories.map(p => ({ ...p, type: 'story' })),
+      ...posts.map((p: any) => ({ ...p, type: 'post' })),
+      ...projects.map((p: any) => ({ ...p, type: 'project' })),
+      ...stories.map((p: any) => ({ ...p, type: 'story' })),
     ]
     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
     .slice(0, 10); // Return top 10 most recent actions
