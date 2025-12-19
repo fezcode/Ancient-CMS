@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
-import { Lock, Mail, User, ArrowRight, Loader2 } from 'lucide-react';
+import { Lock, Mail, User, ArrowRight, Loader2, Eye, EyeOff } from 'lucide-react';
 
 const Login: React.FC = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -94,13 +95,20 @@ const Login: React.FC = () => {
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-ancient-500 group-focus-within:text-gold-500 transition-colors" size={18} />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-ancient-950/50 border border-ancient-800 text-ancient-100 rounded-xl py-3.5 pl-11 pr-4 placeholder:text-ancient-600 focus:outline-none focus:border-gold-500/50 focus:ring-4 focus:ring-gold-500/10 transition-all"
+                  className="w-full bg-ancient-950/50 border border-ancient-800 text-ancient-100 rounded-xl py-3.5 pl-11 pr-12 placeholder:text-ancient-600 focus:outline-none focus:border-gold-500/50 focus:ring-4 focus:ring-gold-500/10 transition-all"
                   placeholder="••••••••"
                   required
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-ancient-500 hover:text-gold-500 transition-colors focus:outline-none"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
 

@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: ancient_db_prod
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-ancient_admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-ancient_secure_password}
+      POSTGRES_DB: ancient_db
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
+
+  # Backend API
+  server:
+    build: ./server
+    container_name: ancient_api_prod
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgres://${DB_USER:-ancient_admin}:${DB_PASSWORD:-ancient_secure_password}@postgres:5432/ancient_db
+      JWT_SECRET: ${JWT_SECRET:-change_this_secret_in_prod}
+    volumes:
+      - uploads_data:/app/public/uploads
+    depends_on:
+      - postgres
+
+  # Admin Dashboard (Exposed on Port 3002)
+  admin:
+    build: 
+      context: ./admin
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:3001}
+    container_name: ancient_admin_prod
+    restart: always
+    ports:
+      - "3002:3000"
+
+  # Public Website (Exposed on Port 80)
+  website:
+    build: 
+      context: ./website
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:3001}
+    container_name: ancient_website_prod
+    restart: always
+    ports:
+      - "80:3000"
+
+volumes:
+  postgres_data_prod:
+  uploads_data:
