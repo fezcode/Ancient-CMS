@@ -11,6 +11,7 @@ import authRoutes from './routes/authRoutes';
 import contentRoutes from './routes/contentRoutes';
 import mediaRoutes from './routes/mediaRoutes';
 import systemRoutes from './routes/systemRoutes';
+import { seedAdmin } from './utils/seed';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -43,8 +44,11 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-app.listen(PORT, () => {
-  console.log(`[server]: AncientCMS is running at http://localhost:${PORT}`);
+// Seed Admin and Start Server
+seedAdmin().then(() => {
+  app.listen(PORT, () => {
+    console.log(`[server]: AncientCMS is running at http://localhost:${PORT}`);
+  });
 });
 
 export { app };
