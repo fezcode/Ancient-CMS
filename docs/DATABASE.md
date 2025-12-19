@@ -44,6 +44,35 @@ npm run dev
 
 ---
 
+## Database Migrations
+
+Whenever you modify the `prisma/schema.prisma` file, you must generate a migration to keep the database in sync.
+
+### 1. Create a Development Migration
+When developing locally, use this command to generate and apply changes:
+```bash
+cd server
+npx prisma migrate dev --name <migration_name>
+```
+*   **What it does:** Generates a SQL file in `prisma/migrations/`, applies it to your local DB, and regenerates the Prisma Client.
+*   **Version Control:** Always commit the generated `prisma/migrations/` folder to Git.
+
+### 2. Deployment Migrations
+When deploying to a production or staging environment, **never** use `migrate dev`. Use:
+```bash
+npx prisma migrate deploy
+```
+*   **What it does:** Applies all pending migrations from the `prisma/migrations/` folder without resetting the database.
+
+### 3. Resetting the Database
+If your local database gets into a corrupted state or you want to start fresh:
+```bash
+npx prisma migrate reset
+```
+*⚠️ Warning: This will delete all data in your local database.*
+
+---
+
 ## Troubleshooting Connection Issues
 
 - **Connection Refused**: Ensure your remote database accepts connections from your IP address (Whitelist your IP).
