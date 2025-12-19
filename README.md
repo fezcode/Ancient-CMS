@@ -1,5 +1,7 @@
 # AncientCMS 🏛️
 
+![AncientCMS Logo](basic-logo.png)
+
 A modern, headless CMS with a "super cool" dark-mode aesthetic.
 
 ## 📚 Documentation
